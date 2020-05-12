@@ -4,19 +4,28 @@ export default class LoadScene extends Phaser.Scene{
     }
 
     preload(){
-        let loadingBar = this.add.image(100, 100, "loadingBar").setOrigin(0);
+        this.canvas = this.sys.game.canvas;
+        let loadingBar = this.add.image(this.canvas.width/2 - 100, this.canvas.height/2 - 21, "loadingBar").setOrigin(0);
+
+        let txtLoadingPerc = this.add.text(loadingBar.x + 100, loadingBar.y + 20 , "0%").setOrigin(0.5)
+
+        let txtLoadingFile = this.add.text(loadingBar.x, loadingBar.y + 42 , "0%")
 
         this.load.on("progress", function (value){
-            loadingBar.displayWidth = 200 * value;
-            console.log(loadingBar.displayWidth)
+            const fixedValue = value.toFixed(4)
+            console.log(fixedValue)
+            loadingBar.displayWidth = loadingBar.width * value;
+            txtLoadingPerc.setText(`${fixedValue*100} %`)
         })
 
         this.load.on("fileprogress", function (file){
             console.log("fileprogress: " + file.src)
+            txtLoadingFile.setText(`Carregando: ${file.key}`)
         })
 
         this.load.on("complete", function (){
             console.log("complete")
+            txtLoadingFile.setText(` Jogo Carregado \n Pressione Enter`)
         })
 
         // CARREGAMENTO DAS IMAGENS
@@ -24,9 +33,15 @@ export default class LoadScene extends Phaser.Scene{
         this.load.image("Tiro", "./assets/imagens/tiro.png")
 
         // CARREGAMENTO DOS SPRITE SHEETS
-        this.load.image("Inimigo", "./assets/imagens/inimigo.png")
-        this.load.image("Jogador", "./assets/imagens/player.png")
-        this.load.image("Explosion", "./assets/imagens/explosion.png")
+        this.load.spritesheet("Inimigo", "./assets/imagens/inimigo.png", {
+            frameWidth: 92, frameHeight: 100
+        })
+        this.load.spritesheet("Jogador", "./assets/imagens/player.png", {
+            frameWidth: 39, frameHeight: 43
+        })
+        this.load.spritesheet("Explosion", "./assets/imagens/explosion.png", {
+            frameWidth: 16, frameHeight: 16
+        })
 
         // CARREGAMENTO DOS AUDIOS
         this.load.audio("motorSFX", "./assets/audio/engine_sound.mp3")
@@ -36,6 +51,18 @@ export default class LoadScene extends Phaser.Scene{
     }
 
     create(){
-        
+        // CRIANDO ANIMAÇÕES
+
+        this.anims.create({
+            key: "Parado",
+            frames: this.anims.generateFrameNumbers("Jogador", {start: 1, end: 2}),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        let enterKey = this.input.keyboard.addKey("ENTER");
+        enterKey.once("down", () =>{
+            this.scene.start("MenuScene"); // FECHA A CENA ATUAL E INICIA A PRÓXIMO
+        })
     }
 }
