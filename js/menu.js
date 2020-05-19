@@ -1,4 +1,4 @@
-export default class Boot extends Phaser.Scene{
+export default class Menu extends Phaser.Scene{
     constructor(){
         super("MenuScene")
     }
@@ -28,7 +28,7 @@ export default class Boot extends Phaser.Scene{
             this.somStartUp.play();
 
             this.somStartUp.once("complete", ()=>{
-                console.log("Mudar de Cena")
+                this.scene.start("GameScene")
             })
         })
     }

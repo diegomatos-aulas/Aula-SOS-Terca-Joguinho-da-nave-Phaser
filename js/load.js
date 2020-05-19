@@ -36,9 +36,11 @@ export default class LoadScene extends Phaser.Scene{
         this.load.spritesheet("Inimigo", "./assets/imagens/inimigo.png", {
             frameWidth: 92, frameHeight: 100
         })
+
         this.load.spritesheet("Jogador", "./assets/imagens/player.png", {
             frameWidth: 39, frameHeight: 43
         })
+
         this.load.spritesheet("Explosion", "./assets/imagens/explosion.png", {
             frameWidth: 16, frameHeight: 16
         })
@@ -46,7 +48,7 @@ export default class LoadScene extends Phaser.Scene{
         // CARREGAMENTO DOS AUDIOS
         this.load.audio("motorSFX", "./assets/audio/engine_sound.mp3")
         this.load.audio("explosaoSFX", "./assets/audio/explosion_sound.mp3")
-        this.load.audio("tiroSFX", "./assets/audio/engine_sound.mp3")
+        this.load.audio("tiroSFX", "./assets/audio/shoot_sound.mp3")
         this.load.audio("startUpSFX", "./assets/audio/start-up_sound.mp3")
     }
 
@@ -59,6 +61,31 @@ export default class LoadScene extends Phaser.Scene{
             frameRate: 10,
             repeat: -1
         });
+
+        this.anims.create({
+            key: "Esquerda",
+            frames: this.anims.generateFrameNumbers("Jogador", {start: 4, end: 5}),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: "Direita",
+            frames: this.anims.generateFrameNumbers("Jogador", {start: 7, end: 8}),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        let explosao = this.anims.create({
+            key: "Explosao",
+            frames: this.anims.generateFrameNumbers("Explosion", {start: 0, end: 4}),
+            frameRate: 10,
+            repeat: 0
+        });
+
+        explosao.on("complete", (currentAnim, currentFrame, sprite) =>{
+            sprite.destroy()
+        })
 
         let enterKey = this.input.keyboard.addKey("ENTER");
         enterKey.once("down", () =>{
