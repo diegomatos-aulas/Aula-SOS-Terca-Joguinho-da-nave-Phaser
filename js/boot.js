@@ -11,3 +11,4 @@ export default class Boot extends Phaser.Scene{
         this.scene.start("LoadScene");
     }
 }
+

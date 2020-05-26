@@ -14,7 +14,10 @@ export default class Menu extends Phaser.Scene{
         this.jogador = this.add.sprite(this.largura / 2, this.altura - 100, "Jogador");
         this.jogador.anims.play("Parado");
 
-        this.somDoMotor = this.sound.add("motorSFX", {loop: true});
+        this.somDoMotor = this.sound.add("motorSFX", {
+            loop: true,
+            volume: 0.5
+        });
         this.somDoMotor.play();
 
         this.somStartUp = this.sound.add("startUpSFX");
