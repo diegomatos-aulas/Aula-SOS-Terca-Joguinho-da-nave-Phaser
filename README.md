@@ -1,2 +1,2 @@
 # 08 Joguinho da nave
- Jogo da nave eito com os alunos da SOS
+ Jogo da nave feito com os alunos da SOS
